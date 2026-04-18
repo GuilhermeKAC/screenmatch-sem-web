@@ -1,11 +1,6 @@
 package br.com.alura.screenmatch;
 
-import br.com.alura.screenmatch.model.DadosEpisodio;
-import br.com.alura.screenmatch.model.DadosSerie;
-import br.com.alura.screenmatch.model.DadosTemporada;
-import br.com.alura.screenmatch.service.ConsumoApi;
-import br.com.alura.screenmatch.service.IConverteDados;
-import br.com.alura.screenmatch.service.converteDados;
+import br.com.alura.screenmatch.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,31 +11,23 @@ import java.util.List;
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ScreenmatchApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ScreenmatchApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		var consumoApi = new ConsumoApi();
+    @Override
+    public void run(String... args) throws Exception {
+        Principal principal = new Principal();
+        principal.exibeMenu();
 
-		var json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&apikey=737ae697");
-//		System.out.println(json);
-		IConverteDados conversor = new converteDados();
-		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
-		System.out.println(dados);
-		json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=1&episode=2&apikey=737ae697");
-		DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
-		System.out.println(dadosEpisodio);
-
-		List<DadosTemporada> temporadas = new ArrayList<>();
-
-		for (int i = 1; i <= dados.totalTemporadas(); i++) {
-			json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=" + i + "&apikey=737ae697");
-			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-			temporadas.add(dadosTemporada);
-		}
-
-		temporadas.forEach(System.out::println);
-	}
+//		List<DadosTemporada> temporadas = new ArrayList<>();
+//
+//		for (int i = 1; i <= dados.totalTemporadas(); i++) {
+//			json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=" + i + "&apikey=737ae697");
+//			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+//			temporadas.add(dadosTemporada);
+//		}
+//
+//		temporadas.forEach(System.out::println);
+    }
 }
