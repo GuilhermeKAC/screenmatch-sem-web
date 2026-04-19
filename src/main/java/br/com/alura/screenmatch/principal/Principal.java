@@ -1,14 +1,18 @@
 package br.com.alura.screenmatch.principal;
 
+import br.com.alura.screenmatch.model.DadosEpisodio;
 import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
+import br.com.alura.screenmatch.model.Episodio;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.IConverteDados;
 import br.com.alura.screenmatch.service.converteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     private static Scanner leitura = new Scanner(System.in);
@@ -23,7 +27,7 @@ public class Principal {
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
         DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
-        System.out.println(dados);
+//        System.out.println(dados);
 
         List<DadosTemporada> temporadas = new ArrayList<>();
 
@@ -33,8 +37,28 @@ public class Principal {
             temporadas.add(dadosTemporada);
         }
 
-        temporadas.forEach(System.out::println);
+//        temporadas.forEach(System.out::println);
 
-        temporadas.forEach(temporada -> temporada.episodios().forEach(e -> System.out.println(e.titulo())));
+//        temporadas.forEach(temporada -> temporada.episodios().forEach(e -> System.out.println(e.titulo())));
+
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("\n Top 5 episódios");
+
+        dadosEpisodios.stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
+
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios()
+                        .stream()
+                        .map(d -> new Episodio(t.numero(), d)))
+                .collect(Collectors.toUnmodifiableList());
+
+        episodios.forEach(System.out::println);
     }
 }
