@@ -2,7 +2,7 @@ package br.com.alura.screenmatch.service;
 
 import tools.jackson.databind.ObjectMapper;
 
-public class converteDados implements IConverteDados{
+public class ConverteDados implements IConverteDados{
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
