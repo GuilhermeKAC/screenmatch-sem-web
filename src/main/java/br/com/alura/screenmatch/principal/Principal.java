@@ -8,6 +8,8 @@ import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.IConverteDados;
 import br.com.alura.screenmatch.service.converteDados;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +25,7 @@ public class Principal {
     private static final String API_KEY = "&apikey=737ae697";
 
     public void exibeMenu() {
-        System.out.println("Digite o nome da série");
+        System.out.println("Digite o nome da série: ");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
         DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
@@ -59,6 +61,20 @@ public class Principal {
                         .map(d -> new Episodio(t.numero(), d)))
                 .collect(Collectors.toUnmodifiableList());
 
-        episodios.forEach(System.out::println);
+//        episodios.forEach(System.out::println);
+
+        System.out.println("A partir de que ano você deseja ver os episódios?: ");
+        var ano = leitura.nextInt();
+        leitura.nextLine();
+
+        LocalDate dataBusca = LocalDate.of(ano, 1, 1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodios.stream()
+                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada() + " Episodio: " + e.getTitulo() + " Data lançamento " + e.getDataLancamento().format(formatter)
+                ));
     }
 }
