@@ -15,9 +15,11 @@ public class Episodio {
         this.temporada = numeroTemporada;
         this.titulo = dadosEpisodio.titulo();
         this.numero = dadosEpisodio.numero();
+
         this.avaliacao = dadosEpisodio.avaliacao().matches("-?\\d+(\\.\\d+)?")
                 ? Double.parseDouble(dadosEpisodio.avaliacao())
                 : 0.0;
+
         this.dataLancamento = dadosEpisodio.dataLancamento().matches("\\d{4}-\\d{2}-\\d{2}")
                 ? LocalDate.parse(dadosEpisodio.dataLancamento())
                 : null;
