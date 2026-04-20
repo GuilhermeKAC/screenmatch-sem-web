@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "series")
@@ -36,18 +37,11 @@ public class Serie {
 
     @Enumerated(EnumType.STRING)
     private Categoria genero;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     private String atores;
     private String poster;
     private String sinopse;
+
+    private List<Episodio> episodios;
 
     public Serie(@NonNull DadosSerie dadosSerie) {
         this.titulo = dadosSerie.titulo();
@@ -59,6 +53,22 @@ public class Serie {
         this.atores = dadosSerie.atores();
         this.poster = dadosSerie.poster();
         this.sinopse = ConsultaIA.obterTraducao(dadosSerie.sinopse()).trim();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
     }
 
     public String getTitulo() {
