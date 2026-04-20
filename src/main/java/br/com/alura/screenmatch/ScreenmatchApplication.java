@@ -2,6 +2,7 @@ package br.com.alura.screenmatch;
 
 import br.com.alura.screenmatch.principal.Principal;
 import br.com.alura.screenmatch.repository.SerieRepository;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +14,10 @@ public class ScreenmatchApplication implements CommandLineRunner {
     private SerieRepository repository;
 
     public static void main(String[] args) {
+        Dotenv.configure().ignoreIfMissing().load()
+                .entries()
+                .forEach(e -> System.setProperty(e.getKey(), e.getValue()));
+
         SpringApplication.run(ScreenmatchApplication.class, args);
     }
 
