@@ -182,7 +182,7 @@ public class Principal {
         System.out.println("Avaliação a partir de qual valor?");
         var avaliacao = Double.parseDouble(leitura.nextLine().replace(",", "."));
 
-        List<Serie> series = repository.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(totalTemporadas, avaliacao);
+        List<Serie> series = repository.seriesPorTemporadaEAvaliacao(totalTemporadas, avaliacao);
         System.out.println("Séries com até " + totalTemporadas + " temporadas e avaliação >= " + avaliacao + ":");
         series.forEach(s -> System.out.println(s.getTitulo() + " (" + s.getTotalTemporadas() + " temporadas) - avaliação " + s.getAvaliacao()));
     }
