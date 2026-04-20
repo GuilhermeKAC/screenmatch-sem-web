@@ -37,6 +37,7 @@ public class Serie {
 
     @Enumerated(EnumType.STRING)
     private Categoria genero;
+
     private String atores;
     private String poster;
     private String sinopse;
